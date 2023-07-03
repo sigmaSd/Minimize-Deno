@@ -2,10 +2,13 @@ import { Pty } from "https://deno.land/x/deno_pty_ffi@0.4.0/mod.ts";
 
 if (Deno.args.length === 0) throw new Error("no program provided");
 
+const no_output = Deno.env.get("NO_OUTPUT");
+if (no_output) Deno.env.set("NO_COLOR", "true");
+
 const pty = await Pty.create({
   cmd: "deno",
   args: ["run", ...Deno.args],
-  env: [["NO_COLOR", "1"]],
+  env: [],
 });
 
 type Permission = "read" | "write" | "net" | "env";
@@ -48,13 +51,17 @@ Deno.addSignalListener("SIGINT", () => {
 while (true) {
   const line = await pty.read();
   if (!line) break;
-  // console.log(line);
+  if (!no_output) {
+    await Deno.stdout.write(new TextEncoder().encode(line));
+  }
 
   if (line.includes("Granted") && line.includes("access")) {
     const line_split = line.split(/\s+/);
     const mark = line_split.indexOf("access");
     const permission_type = line_split[mark - 1] as Permission;
     let permission = line_split[mark + 2].slice(1, -2);
+
+    if (no_output) console.log(permission_type, permission);
 
     switch (permission) {
       case "CWD":
@@ -65,7 +72,6 @@ while (true) {
         break;
     }
 
-    console.log(permission_type, permission);
     permissions[permission_type].push(permission);
   }
 
