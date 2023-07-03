@@ -16,25 +16,32 @@ const permissions: Record<Permission, string[]> = {
   env: [],
 };
 
-Deno.addSignalListener("SIGINT", () => {
+function printPermissions() {
   console.log("\nPermissions:");
   console.log(permissions);
+  console.log();
   console.log("Command:");
   console.log(
     "deno run " +
       (
-        permissions.read ? "--allow-read=" + permissions.read : ""
+        permissions.read.length !== 0 ? "--allow-read=" + permissions.read : ""
       ) + " " +
       (
-        permissions.write ? "--allow-write=" + permissions.write : ""
+        permissions.write.length !== 0
+          ? "--allow-write=" + permissions.write
+          : ""
       ) + " " +
       (
-        permissions.net ? "--allow-net=" + permissions.net : ""
+        permissions.net.length !== 0 ? "--allow-net=" + permissions.net : ""
       ) + " " +
       (
-        permissions.env ? "--allow-env=" + permissions.env : ""
-      ),
+        permissions.env.length !== 0 ? "--allow-env=" + permissions.env : ""
+      ) + " " + Deno.args.join(" "),
   );
+}
+
+Deno.addSignalListener("SIGINT", () => {
+  printPermissions();
   Deno.exit();
 });
 
@@ -66,3 +73,5 @@ while (true) {
     await pty.write("y\n");
   }
 }
+
+printPermissions();
