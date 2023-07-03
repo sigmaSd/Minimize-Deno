@@ -8,7 +8,7 @@ Replace deno `-A` with the actual used flags
 deno run --allow-all --unstable --reload https://github.com/sigmaSd/Minimize-Deno/raw/master/main.ts deno_file.ts
 ```
 
-<img src="https://cdn.discordapp.com/attachments/712010403302866974/1007952292361818212/min.gif"/>
+<img src="https://matrix-client.matrix.org/_matrix/media/v3/download/matrix.org/BMGTYGkYOTikSdJZQDmSootc"/>
 
 ## How it works
 
