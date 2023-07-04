@@ -11,7 +11,7 @@ const pty = await Pty.create({
 });
 
 type Permission = "read" | "write" | "net" | "env" | "run";
-const permissions: Record<Permission, string[]> = {
+const permissions: Record<Permission, string[] | "all"> = {
   read: [],
   write: [],
   net: [],
@@ -27,21 +27,39 @@ function printPermissions() {
   console.log(
     "deno run " +
       (
-        permissions.read.length !== 0 ? "--allow-read=" + permissions.read : ""
+        permissions.read === "all"
+          ? "--allow-read"
+          : permissions.read.length !== 0
+          ? "--allow-read=" + permissions.read
+          : ""
       ) + " " +
       (
-        permissions.write.length !== 0
+        permissions.write === "all"
+          ? "--allow-write"
+          : permissions.write.length !== 0
           ? "--allow-write=" + permissions.write
           : ""
       ) + " " +
       (
-        permissions.net.length !== 0 ? "--allow-net=" + permissions.net : ""
+        permissions.net === "all"
+          ? "--allow-net"
+          : permissions.net.length !== 0
+          ? "--allow-net=" + permissions.net
+          : ""
       ) + " " +
       (
-        permissions.run.length !== 0 ? "--allow-run=" + permissions.run : ""
+        permissions.run === "all"
+          ? "--allow-run"
+          : permissions.run.length !== 0
+          ? "--allow-run=" + permissions.run
+          : ""
       ) + " " +
       (
-        permissions.env.length !== 0 ? "--allow-env=" + permissions.env : ""
+        permissions.env === "all"
+          ? "--allow-env"
+          : permissions.env.length !== 0
+          ? "--allow-env=" + permissions.env
+          : ""
       ) + " " + Deno.args.join(" "),
   );
 }
@@ -62,20 +80,30 @@ while (true) {
     const line_split = line.split(/\s+/);
     const mark = line_split.indexOf("access");
     const permission_type = line_split[mark - 1] as Permission;
-    let permission = line_split[mark + 2].slice(1, -2);
+    let permission = line_split[mark + 2];
+    // remove dot perm.
+    permission = permission.slice(0, -1);
+    // remove quotes "permission"
+    if (permission.startsWith('"')) {
+      permission = permission.slice(1, -1);
+    }
 
     if (no_output) console.log(permission_type, permission);
 
     switch (permission) {
-      case "CWD":
+      case "<CWD>":
         permission = Deno.cwd();
         break;
-      case "TMP":
+      case "<TMP>":
         permission = pty.tmpDir();
         break;
     }
 
-    permissions[permission_type].push(permission);
+    if (permission === "all") {
+      permissions[permission_type] = "all";
+    } else if (permissions[permission_type] !== "all") {
+      (permissions[permission_type] as string[]).push(permission);
+    }
   }
 
   if (line.includes("Allow?")) {
