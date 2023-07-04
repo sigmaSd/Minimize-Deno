@@ -38,7 +38,7 @@ function printPermissions() {
         permissions.net.length !== 0 ? "--allow-net=" + permissions.net : ""
       ) + " " +
       (
-        permissions.run.length !== 0 ? "--allow-run=" + permissions.net : ""
+        permissions.run.length !== 0 ? "--allow-run=" + permissions.run : ""
       ) + " " +
       (
         permissions.env.length !== 0 ? "--allow-env=" + permissions.env : ""
