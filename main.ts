@@ -11,12 +11,13 @@ const pty = await Pty.create({
   env: [],
 });
 
-type Permission = "read" | "write" | "net" | "env";
+type Permission = "read" | "write" | "net" | "env" | "run";
 const permissions: Record<Permission, string[]> = {
   read: [],
   write: [],
   net: [],
   env: [],
+  run: [],
 };
 
 function printPermissions() {
@@ -36,6 +37,9 @@ function printPermissions() {
       ) + " " +
       (
         permissions.net.length !== 0 ? "--allow-net=" + permissions.net : ""
+      ) + " " +
+      (
+        permissions.run.length !== 0 ? "--allow-run=" + permissions.net : ""
       ) + " " +
       (
         permissions.env.length !== 0 ? "--allow-env=" + permissions.env : ""
