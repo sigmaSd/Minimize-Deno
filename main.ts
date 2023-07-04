@@ -3,12 +3,11 @@ import { Pty } from "https://deno.land/x/deno_pty_ffi@0.4.0/mod.ts";
 if (Deno.args.length === 0) throw new Error("no program provided");
 
 const no_output = Deno.env.get("NO_OUTPUT");
-if (no_output) Deno.env.set("NO_COLOR", "true");
 
 const pty = await Pty.create({
   cmd: "deno",
   args: ["run", ...Deno.args],
-  env: [],
+  env: [["NO_COLOR", "true"]],
 });
 
 type Permission = "read" | "write" | "net" | "env" | "run";
