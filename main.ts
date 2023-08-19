@@ -106,12 +106,16 @@ while (true) {
 
     if (no_output) console.log(permission_type, permission);
 
+    console.log(permission);
     switch (permission) {
       case "<CWD>":
         permission = Deno.cwd();
         break;
       case "<TMP>":
         permission = pty.tmpDir();
+        break;
+      case "<exec_path>":
+        permission = Deno.execPath();
         break;
     }
 
