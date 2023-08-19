@@ -10,13 +10,14 @@ const pty = await Pty.create({
   env: [["NO_COLOR", "true"]],
 });
 
-type Permission = "read" | "write" | "net" | "env" | "run";
+type Permission = "read" | "write" | "net" | "env" | "run" | "ffi";
 const permissions: Record<Permission, string[] | "all"> = {
   read: [],
   write: [],
   net: [],
   env: [],
   run: [],
+  ffi: [],
 };
 
 function printPermissions() {
@@ -61,6 +62,13 @@ function printPermissions() {
           ? "--allow-env=" + permissions.env
           : ""
       ) + " " + Deno.args.join(" "),
+    (
+      permissions.ffi === "all"
+        ? "--allow-ffi"
+        : permissions.ffi.length !== 0
+        ? "--allow-ffi=" + permissions.ffi
+        : ""
+    ) + " " + Deno.args.join(" "),
   );
 }
 
