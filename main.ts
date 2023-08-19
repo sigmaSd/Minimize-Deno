@@ -85,12 +85,20 @@ while (true) {
   }
 
   if (line.includes("Granted") && line.includes("access")) {
-    const line_split = line.split(/\s+/);
+    // remove the dot at the end
+    const line_split = line.trim().slice(0, -1).split(/\s+/);
     const mark = line_split.indexOf("access");
     const permission_type = line_split[mark - 1] as Permission;
-    let permission = line_split[mark + 2];
-    // remove dot perm.
-    permission = permission.slice(0, -1);
+
+    let permission;
+    if (line_split.at(mark + 2) === undefined) {
+      // granted all to permission
+      permission = "all";
+    } else {
+      // granted a specific permission
+      permission = line_split[mark + 2];
+    }
+
     // remove quotes "permission"
     if (permission.startsWith('"')) {
       permission = permission.slice(1, -1);
