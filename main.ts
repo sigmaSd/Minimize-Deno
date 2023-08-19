@@ -56,19 +56,20 @@ function printPermissions() {
           : ""
       ) + " " +
       (
+        permissions.ffi === "all"
+          ? "--allow-ffi"
+          : permissions.ffi.length !== 0
+          ? "--allow-ffi=" + permissions.ffi
+          : ""
+      ) + " " +
+      (
         permissions.env === "all"
           ? "--allow-env"
           : permissions.env.length !== 0
           ? "--allow-env=" + permissions.env
           : ""
-      ) + " " + Deno.args.join(" "),
-    (
-      permissions.ffi === "all"
-        ? "--allow-ffi"
-        : permissions.ffi.length !== 0
-        ? "--allow-ffi=" + permissions.ffi
-        : ""
-    ) + " " + Deno.args.join(" "),
+      ) + " " +
+      Deno.args.join(" "),
   );
 }
 
