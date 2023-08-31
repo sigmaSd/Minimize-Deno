@@ -18,6 +18,6 @@ deno run --allow-all --unstable --reload https://github.com/sigmaSd/Minimize-Den
 
 ## Tips
 
-The output can be custimised with `OUTPUT` env variable, values are `default`, `json`, `none`
+The output can be customized with `OUTPUT` env variable, values are `default`, `json`, `none`
 
 Original python version https://github.com/sigmaSd/Minimize
