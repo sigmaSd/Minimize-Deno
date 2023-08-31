@@ -19,7 +19,7 @@ Deno.test("smoke", () => {
 
 function min(case_: string): Record<Permission, string[] | "all"> {
   const out = new Deno.Command("deno", {
-    args: ["run", "-A", "--unstable", "./main.ts", case_],
+    args: ["run", "-A", "--quiet", "--unstable", "./main.ts", case_],
     env: { "OUTPUT": "json" },
   }).outputSync();
   assert(out.success);
