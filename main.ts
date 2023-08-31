@@ -129,7 +129,7 @@ while (true) {
   }
 
   if (line.includes("Allow?")) {
-    await pty.write("y\n");
+    await pty.write("y\n\r");
   }
 }
 

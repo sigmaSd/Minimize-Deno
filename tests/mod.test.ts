@@ -29,6 +29,7 @@ function heatUp() {
       "./main.ts",
       "./tests/cases/no_permissions.ts",
     ],
+    stderr: "inherit",
     env: { "OUTPUT": "json" },
   }).outputSync();
 }
@@ -36,9 +37,9 @@ function heatUp() {
 function min(case_: string): Record<Permission, string[] | "all"> {
   const out = new Deno.Command("deno", {
     args: ["run", "-A", "--unstable", "./main.ts", case_],
+    stderr: "inherit",
     env: { "OUTPUT": "json" },
   }).outputSync();
-  assert(out.success);
 
   return JSON.parse(D.decode(out.stdout));
 }
