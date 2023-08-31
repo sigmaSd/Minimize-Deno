@@ -23,6 +23,7 @@ function min(case_: string): Record<Permission, string[] | "all"> {
     env: { "OUTPUT": "json" },
   }).outputSync();
   assert(out.success);
+  console.log(D.decode(out.stdout));
 
   return JSON.parse(D.decode(out.stdout));
 }
