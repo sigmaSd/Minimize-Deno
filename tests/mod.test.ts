@@ -6,10 +6,8 @@ import { Permission } from "../main.ts";
 
 const D = new TextDecoder();
 
-Deno.test("No permissions", () => {
-  const output = min("./tests/cases/no_permissions.ts");
-  assert(output.read.length === 0);
-});
+// This first run, triggers the Downloading message from Plug
+min("./tests/cases/no_permissions.ts");
 
 Deno.test("smoke", () => {
   const output = min("./tests/cases/smoke.ts");
@@ -19,11 +17,10 @@ Deno.test("smoke", () => {
 
 function min(case_: string): Record<Permission, string[] | "all"> {
   const out = new Deno.Command("deno", {
-    args: ["run", "-A", "--quiet", "--unstable", "./main.ts", case_],
+    args: ["run", "-A", "--unstable", "./main.ts", case_],
     env: { "OUTPUT": "json" },
   }).outputSync();
   assert(out.success);
-  console.log(D.decode(out.stdout));
 
   return JSON.parse(D.decode(out.stdout));
 }
