@@ -80,7 +80,6 @@ Deno.addSignalListener("SIGINT", () => {
 
 while (true) {
   const line = await pty.read();
-  console.error("line:", line);
   if (!line) break;
   if (!output || output === "default") {
     await Deno.stdout.write(new TextEncoder().encode(line));
