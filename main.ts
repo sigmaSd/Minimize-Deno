@@ -1,4 +1,4 @@
-import { Pty } from "https://deno.land/x/deno_pty_ffi@0.10.0/mod.ts";
+import { Pty } from "https://deno.land/x/deno_pty_ffi@0.11.0/mod.ts";
 
 if (Deno.args.length === 0) throw new Error("no program provided");
 
