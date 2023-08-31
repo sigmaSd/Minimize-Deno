@@ -40,6 +40,12 @@ function min(case_: string): Record<Permission, string[] | "all"> {
     stderr: "inherit",
     env: { "OUTPUT": "json" },
   }).outputSync();
+  console.log(
+    D.decode(out.stdout),
+  );
+  console.log(
+    D.decode(out.stderr),
+  );
   assert(out.success);
 
   return JSON.parse(D.decode(out.stdout));
