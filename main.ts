@@ -2,7 +2,7 @@ import { Pty } from "https://deno.land/x/deno_pty_ffi@0.11.0/mod.ts";
 
 if (Deno.args.length === 0) throw new Error("no program provided");
 
-const no_output = Deno.env.get("NO_OUTPUT");
+const output = Deno.env.get("OUTPUT");
 
 const pty = await Pty.create({
   cmd: "deno",
@@ -10,7 +10,7 @@ const pty = await Pty.create({
   env: [["NO_COLOR", "true"]],
 });
 
-type Permission = "read" | "write" | "net" | "env" | "run" | "ffi";
+export type Permission = "read" | "write" | "net" | "env" | "run" | "ffi";
 const permissions: Record<Permission, string[] | "all"> = {
   read: [],
   write: [],
@@ -81,7 +81,7 @@ Deno.addSignalListener("SIGINT", () => {
 while (true) {
   const line = await pty.read();
   if (!line) break;
-  if (!no_output) {
+  if (!output || output === "default") {
     await Deno.stdout.write(new TextEncoder().encode(line));
   }
 
@@ -105,7 +105,9 @@ while (true) {
       permission = permission.slice(1, -1);
     }
 
-    if (no_output) console.log(permission_type, permission);
+    if (!output || output === "default") {
+      console.log(permission_type, permission);
+    }
 
     switch (permission) {
       case "<CWD>":
@@ -131,4 +133,8 @@ while (true) {
   }
 }
 
-printPermissions();
+if (output === "json") {
+  console.log(JSON.stringify(permissions));
+} else {
+  printPermissions();
+}

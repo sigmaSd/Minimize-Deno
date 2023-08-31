@@ -16,4 +16,8 @@ deno run --allow-all --unstable --reload https://github.com/sigmaSd/Minimize-Den
 - Says yes to every prompt
 - Prints all discovered permissions
 
+## Tips
+
+The output can be custimised with `OUTPUT` env variable, values are `default`, `json`, `none`
+
 Original python version https://github.com/sigmaSd/Minimize
