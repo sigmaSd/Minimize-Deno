@@ -17,7 +17,10 @@ Deno.test("No permissions", () => {
 Deno.test("smoke", () => {
   const output = min("./tests/cases/smoke.ts");
   assertEquals(output.read, ["doesntexist"]);
-  assertEquals(output.env, ["doesntexist"]);
+  // windows have env in uppercase
+  assertEquals((output.env as string[]).map((s) => s.toLowerCase()), [
+    "doesntexist",
+  ]);
 });
 
 function heatUp() {
