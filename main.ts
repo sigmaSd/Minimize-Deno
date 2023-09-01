@@ -135,11 +135,11 @@ while (true) {
     }
   }
 
-  // if (lines.includes("Allow?")) {
-  // console.warn("line includes allow");
-  await pty.write("y\n\r");
-  // console.warn("y written");
-  // }
+  if (lines.includes("Allow?")) {
+    console.warn("##############");
+    await pty.write("y\n\r");
+    // console.warn("y written");
+  }
 }
 
 if (output === "json") {
