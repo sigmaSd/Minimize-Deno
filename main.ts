@@ -89,7 +89,7 @@ while (true) {
   }
 
   if (lines.includes("Granted") && lines.includes("access")) {
-    const line = lines.split("\n\r").find((line) =>
+    const line = lines.split("\r\n").find((line) =>
       line.includes("Granted") && line.includes("access")
     )!;
     console.warn("line:", JSON.stringify(lines));
