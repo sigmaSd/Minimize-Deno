@@ -83,7 +83,7 @@ while (true) {
   let lines = await pty.read();
   if (!lines) break;
   lines = stripAnsiCode(lines);
-  // console.warn("line:", JSON.stringify(line));
+  console.warn("lines:", JSON.stringify(lines));
   if (!output || output === "default") {
     await Deno.stdout.write(new TextEncoder().encode(lines));
   }
@@ -92,6 +92,7 @@ while (true) {
     const line = lines.split("\n\r").find((line) =>
       line.includes("Granted") && line.includes("access")
     )!;
+    console.warn("line:", JSON.stringify(lines));
     // remove the dot at the end
     const line_split = line.trim().slice(0, -1).split(/\s+/);
     const mark = line_split.indexOf("access");
