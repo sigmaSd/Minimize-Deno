@@ -7,7 +7,7 @@ const output = Deno.env.get("OUTPUT");
 const pty = await Pty.create({
   cmd: "deno",
   args: ["run", ...Deno.args],
-  env: [["NO_COLOR", "true"]],
+  env: [],
 });
 
 export type Permission = "read" | "write" | "net" | "env" | "run" | "ffi";
@@ -131,6 +131,7 @@ while (true) {
 
   if (line.includes("Allow?")) {
     console.warn("line includes allow");
+    new Promise((r) => setTimeout(r, 1000));
     await pty.write("y\n\r");
     console.warn("y written");
   }
