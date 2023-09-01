@@ -7,7 +7,7 @@ const output = Deno.env.get("OUTPUT");
 const pty = await Pty.create({
   cmd: "deno",
   args: ["run", ...Deno.args],
-  env: [],
+  env: [["NO_COLOR", "true"]],
 });
 
 export type Permission = "read" | "write" | "net" | "env" | "run" | "ffi";
