@@ -80,15 +80,18 @@ Deno.addSignalListener("SIGINT", () => {
 });
 
 while (true) {
-  let line = await pty.read();
-  if (!line) break;
-  line = stripAnsiCode(line);
-  console.warn("line:", JSON.stringify(line));
+  let lines = await pty.read();
+  if (!lines) break;
+  lines = stripAnsiCode(lines);
+  // console.warn("line:", JSON.stringify(line));
   if (!output || output === "default") {
-    await Deno.stdout.write(new TextEncoder().encode(line));
+    await Deno.stdout.write(new TextEncoder().encode(lines));
   }
 
-  if (line.includes("Granted") && line.includes("access")) {
+  if (lines.includes("Granted") && lines.includes("access")) {
+    const line = lines.split("\n\r").find((line) =>
+      line.includes("Granted") && line.includes("access")
+    )!;
     // remove the dot at the end
     const line_split = line.trim().slice(0, -1).split(/\s+/);
     const mark = line_split.indexOf("access");
@@ -131,7 +134,7 @@ while (true) {
     }
   }
 
-  if (line.includes("Allow?")) {
+  if (lines.includes("Allow?")) {
     console.warn("line includes allow");
     await pty.write("y\n\r");
     console.warn("y written");
