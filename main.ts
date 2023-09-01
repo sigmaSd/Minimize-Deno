@@ -83,15 +83,18 @@ while (true) {
   let lines = await pty.read();
   if (!lines) break;
   lines = stripAnsiCode(lines);
+  console.warn("lines:", JSON.stringify(lines));
   if (!output || output === "default") {
     await Deno.stdout.write(new TextEncoder().encode(lines));
   }
 
   if (lines.includes("Granted") && lines.includes("access")) {
-    const line = lines.split(".\r\n").find((line) =>
+    const line = lines.split("\r\n").find((line) =>
       line.includes("Granted") && line.includes("access")
     )!;
-    const line_split = line.trim().split(/\s+/);
+    console.warn("line:", JSON.stringify(lines));
+    // remove the dot at the end
+    const line_split = line.trim().slice(0, -1).split(/\s+/);
     const mark = line_split.indexOf("access");
     const permission_type = line_split[mark - 1] as Permission;
 
@@ -133,7 +136,9 @@ while (true) {
   }
 
   if (lines.includes("Allow?")) {
+    console.warn("line includes allow");
     await pty.write("y\n\r");
+    console.warn("y written");
   }
 }
 
