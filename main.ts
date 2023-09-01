@@ -130,7 +130,9 @@ while (true) {
   }
 
   if (line.includes("Allow?")) {
+    console.warn("line includes allow");
     await pty.write("y\n\r");
+    console.warn("y written");
   }
 }
 
