@@ -1,4 +1,5 @@
-import { Pty } from "https://deno.land/x/deno_pty_ffi@0.11.0/mod.ts";
+import { Pty } from "https://deno.land/x/deno_pty_ffi@0.13.0/mod.ts";
+import { stripAnsiCode } from "https://deno.land/std@0.201.0/fmt/colors.ts";
 
 if (Deno.args.length === 0) throw new Error("no program provided");
 
@@ -79,15 +80,18 @@ Deno.addSignalListener("SIGINT", () => {
 });
 
 while (true) {
-  const line = await pty.read();
-  if (!line) break;
+  let lines = await pty.read();
+  if (!lines) break;
+  lines = stripAnsiCode(lines);
   if (!output || output === "default") {
-    await Deno.stdout.write(new TextEncoder().encode(line));
+    await Deno.stdout.write(new TextEncoder().encode(lines));
   }
 
-  if (line.includes("Granted") && line.includes("access")) {
-    // remove the dot at the end
-    const line_split = line.trim().slice(0, -1).split(/\s+/);
+  if (lines.includes("Granted") && lines.includes("access")) {
+    const line = lines.split(".\r\n").find((line) =>
+      line.includes("Granted") && line.includes("access")
+    )!;
+    const line_split = line.trim().split(/\s+/);
     const mark = line_split.indexOf("access");
     const permission_type = line_split[mark - 1] as Permission;
 
@@ -128,7 +132,7 @@ while (true) {
     }
   }
 
-  if (line.includes("Allow?")) {
+  if (lines.includes("Allow?")) {
     await pty.write("y\n\r");
   }
 }
