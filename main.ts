@@ -80,7 +80,6 @@ Deno.addSignalListener("SIGINT", () => {
 
 while (true) {
   const line = await pty.read();
-  new Promise((r) => setTimeout(r, 1000));
   console.warn(line);
   if (!line) break;
   if (!output || output === "default") {
@@ -132,7 +131,8 @@ while (true) {
 
   if (line.includes("Allow?")) {
     console.warn("line includes allow");
-    new Promise((r) => setTimeout(r, 1000));
+    await pty.write("y\n\r");
+    await pty.write("y\n\r");
     await pty.write("y\n\r");
     console.warn("y written");
   }
