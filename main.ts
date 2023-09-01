@@ -83,6 +83,7 @@ while (true) {
   let line = await pty.read();
   if (!line) break;
   line = stripAnsiCode(line);
+  console.warn("line:", JSON.stringify(line));
   if (!output || output === "default") {
     await Deno.stdout.write(new TextEncoder().encode(line));
   }
