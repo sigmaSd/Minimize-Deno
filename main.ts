@@ -26,52 +26,45 @@ function printPermissions() {
   console.log(permissions);
   console.log();
   console.log("Command:");
-  console.log(
-    "deno run " +
-      (
-        permissions.read === "all"
-          ? "--allow-read"
-          : permissions.read.length !== 0
-          ? "--allow-read=" + permissions.read
-          : ""
-      ) + " " +
-      (
-        permissions.write === "all"
-          ? "--allow-write"
-          : permissions.write.length !== 0
-          ? "--allow-write=" + permissions.write
-          : ""
-      ) + " " +
-      (
-        permissions.net === "all"
-          ? "--allow-net"
-          : permissions.net.length !== 0
-          ? "--allow-net=" + permissions.net
-          : ""
-      ) + " " +
-      (
-        permissions.run === "all"
-          ? "--allow-run"
-          : permissions.run.length !== 0
-          ? "--allow-run=" + permissions.run
-          : ""
-      ) + " " +
-      (
-        permissions.ffi === "all"
-          ? "--allow-ffi"
-          : permissions.ffi.length !== 0
-          ? "--allow-ffi=" + permissions.ffi
-          : ""
-      ) + " " +
-      (
-        permissions.env === "all"
-          ? "--allow-env"
-          : permissions.env.length !== 0
-          ? "--allow-env=" + permissions.env
-          : ""
-      ) + " " +
-      Deno.args.join(" "),
-  );
+  const command = [
+    "deno",
+    "run",
+    permissions.read === "all"
+      ? "--allow-read"
+      : permissions.read.length !== 0
+      ? "--allow-read=" + permissions.read
+      : "",
+    permissions.write === "all"
+      ? "--allow-write"
+      : permissions.write.length !== 0
+      ? "--allow-write=" + permissions.write
+      : "",
+    permissions.net === "all"
+      ? "--allow-net"
+      : permissions.net.length !== 0
+      ? "--allow-net=" + permissions.net
+      : "",
+    permissions.run === "all"
+      ? "--allow-run"
+      : permissions.run.length !== 0
+      ? "--allow-run=" + permissions.run
+      : "",
+    permissions.ffi === "all"
+      ? "--allow-ffi"
+      : permissions.ffi.length !== 0
+      ? "--allow-ffi=" + permissions.ffi
+      : "",
+    permissions.env === "all"
+      ? "--allow-env"
+      : permissions.env.length !== 0
+      ? "--allow-env=" + permissions.env
+      : "",
+    ...Deno.args,
+  ]
+    // remove emptyness
+    .filter((e) => e)
+    .join(" ");
+  console.log(command);
 }
 
 Deno.addSignalListener("SIGINT", () => {
