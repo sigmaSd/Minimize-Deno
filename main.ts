@@ -1,11 +1,11 @@
-import { Pty } from "https://deno.land/x/deno_pty_ffi@0.15.2/mod.ts";
+import { Pty } from "https://deno.land/x/deno_pty_ffi@0.16.0/mod.ts";
 import { stripAnsiCode } from "https://deno.land/std@0.204.0/fmt/colors.ts";
 
 if (Deno.args.length === 0) throw new Error("no program provided");
 
 const output = Deno.env.get("OUTPUT");
 
-const pty = await Pty.create({
+const pty = new Pty({
   cmd: "deno",
   args: ["run", ...Deno.args],
   env: [["NO_COLOR", "true"]],
