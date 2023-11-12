@@ -12,7 +12,7 @@ const pty = new Pty({
 });
 
 export type Permission = "read" | "write" | "net" | "env" | "run" | "ffi";
-const permissions: Record<Permission, string[] | "all"> = {
+const permissions: Record<Permission, string[]> = {
   read: [],
   write: [],
   net: [],
@@ -29,32 +29,32 @@ function printPermissions() {
   const command = [
     "deno",
     "run",
-    permissions.read === "all"
+    permissions.read.includes("<ALL>")
       ? "--allow-read"
       : permissions.read.length !== 0
       ? "--allow-read=" + permissions.read
       : "",
-    permissions.write === "all"
+    permissions.write.includes("<ALL>")
       ? "--allow-write"
       : permissions.write.length !== 0
       ? "--allow-write=" + permissions.write
       : "",
-    permissions.net === "all"
+    permissions.net.includes("<ALL>")
       ? "--allow-net"
       : permissions.net.length !== 0
       ? "--allow-net=" + permissions.net
       : "",
-    permissions.run === "all"
+    permissions.run.includes("<ALL>")
       ? "--allow-run"
       : permissions.run.length !== 0
       ? "--allow-run=" + permissions.run
       : "",
-    permissions.ffi === "all"
+    permissions.ffi.includes("<ALL>")
       ? "--allow-ffi"
       : permissions.ffi.length !== 0
       ? "--allow-ffi=" + permissions.ffi
       : "",
-    permissions.env === "all"
+    permissions.env.includes("<ALL>")
       ? "--allow-env"
       : permissions.env.length !== 0
       ? "--allow-env=" + permissions.env
@@ -91,7 +91,7 @@ while (true) {
     let permission;
     if (line_split.at(mark + 2) === undefined) {
       // granted all to permission
-      permission = "all";
+      permission = "<ALL>";
     } else {
       // granted a specific permission
       permission = line_split[mark + 2];
@@ -118,11 +118,7 @@ while (true) {
         break;
     }
 
-    if (permission === "all") {
-      permissions[permission_type] = "all";
-    } else if (permissions[permission_type] !== "all") {
-      (permissions[permission_type] as string[]).push(permission);
-    }
+    permissions[permission_type].push(permission);
   }
 
   if (lines.includes("Allow?")) {
