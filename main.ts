@@ -97,10 +97,10 @@ while (true) {
       permission = line_split[mark + 2];
     }
 
+    // sometime the dot remain...
+    if (permission.endsWith(".")) permission = permission.slice(0, -1);
     // remove quotes "permission"
-    if (permission.startsWith('"')) {
-      permission = permission.slice(1, -1);
-    }
+    if (permission.startsWith('"')) permission = permission.slice(1, -1);
 
     if (!output || output === "default") {
       console.log(permission_type, permission);
