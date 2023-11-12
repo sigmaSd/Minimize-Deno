@@ -1,5 +1,5 @@
-import { Pty } from "https://deno.land/x/deno_pty_ffi@0.16.0/mod.ts";
-import { stripAnsiCode } from "https://deno.land/std@0.204.0/fmt/colors.ts";
+import { Pty } from "https://deno.land/x/deno_pty_ffi@0.17.1/mod.ts";
+import { stripAnsiCode } from "https://deno.land/std@0.206.0/fmt/colors.ts";
 
 if (Deno.args.length === 0) throw new Error("no program provided");
 
