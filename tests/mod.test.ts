@@ -1,7 +1,7 @@
 import {
   assert,
   assertEquals,
-} from "https://deno.land/std@0.206.0/assert/mod.ts";
+} from "https://deno.land/std@0.208.0/assert/mod.ts";
 import { Permission } from "../main.ts";
 
 const D = new TextDecoder();
