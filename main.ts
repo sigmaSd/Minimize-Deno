@@ -11,7 +11,14 @@ const pty = new Pty({
   env: [["NO_COLOR", "true"]],
 });
 
-export type Permission = "read" | "write" | "net" | "env" | "run" | "ffi";
+export type Permission =
+  | "read"
+  | "write"
+  | "net"
+  | "env"
+  | "run"
+  | "ffi"
+  | "sys";
 const permissions: Record<Permission, string[]> = {
   read: [],
   write: [],
@@ -19,6 +26,7 @@ const permissions: Record<Permission, string[]> = {
   env: [],
   run: [],
   ffi: [],
+  sys: [],
 };
 
 function printPermissions() {
@@ -53,6 +61,11 @@ function printPermissions() {
       ? "--allow-ffi"
       : permissions.ffi.length !== 0
       ? "--allow-ffi=" + permissions.ffi
+      : "",
+    permissions.sys.includes("<ALL>")
+      ? "--allow-sys"
+      : permissions.sys.length !== 0
+      ? "--allow-sys=" + permissions.sys
       : "",
     permissions.env.includes("<ALL>")
       ? "--allow-env"
