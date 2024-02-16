@@ -5,7 +5,7 @@ Replace deno `-A` with the actual used flags
 ## Usage
 
 ```sh
-deno run --allow-all --unstable --reload https://github.com/sigmaSd/Minimize-Deno/raw/master/main.ts deno_file.ts
+deno run --allow-all --unstable-ffi --reload https://github.com/sigmaSd/Minimize-Deno/raw/master/main.ts deno_file.ts
 ```
 
 <img src="https://matrix-client.matrix.org/_matrix/media/r0/download/matrix.org/CFviILnvYbFZxYqIMnqZZcoL"/>

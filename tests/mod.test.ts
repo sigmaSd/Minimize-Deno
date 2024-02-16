@@ -28,7 +28,7 @@ function heatUp() {
     args: [
       "run",
       "-A",
-      "--unstable",
+      "--unstable-ffi",
       "./main.ts",
       "./tests/cases/no_permissions.ts",
     ],
@@ -39,7 +39,7 @@ function heatUp() {
 
 function min(case_: string): Record<Permission, string[] | "all"> {
   const out = new Deno.Command("deno", {
-    args: ["run", "-A", "--unstable", "./main.ts", case_],
+    args: ["run", "-A", "--unstable-ffi", "./main.ts", case_],
     stderr: "inherit",
     env: { "OUTPUT": "json" },
   }).outputSync();

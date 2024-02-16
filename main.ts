@@ -1,4 +1,4 @@
-import { Pty } from "https://deno.land/x/deno_pty_ffi@0.18.0/mod.ts";
+import { Pty } from "https://deno.land/x/deno_pty_ffi@0.19.6/mod.ts";
 import { stripAnsiCode } from "https://deno.land/std@0.208.0/fmt/colors.ts";
 
 if (Deno.args.length === 0) throw new Error("no program provided");
@@ -86,8 +86,8 @@ Deno.addSignalListener("SIGINT", () => {
 });
 
 while (true) {
-  let lines = await pty.read();
-  if (!lines) break;
+  let { data: lines, done } = await pty.read();
+  if (done) break;
   lines = stripAnsiCode(lines);
   if (!output || output === "default") {
     await Deno.stdout.write(new TextEncoder().encode(lines));
