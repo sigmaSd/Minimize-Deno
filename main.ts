@@ -6,7 +6,7 @@ Replace deno `-A` with the actual used flags
 ## Usage
 
 ```sh
-deno run --unstable-ffi jsr:@sigma/min
+deno run --unstable-ffi jsr:@sigma/minimize
 ```
 
 ## How it works
