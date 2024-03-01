@@ -1,12 +1,12 @@
 /**
 # Minimize
 
-Replace deno `-A` with the actual used flags
+Find all the permissions used by a Deno program
 
 ## Usage
 
 ```sh
-deno run --unstable-ffi jsr:@sigma/minimize
+deno run --unstable-ffi jsr:@sigma/minimize my-deno-program.ts
 ```
 
 ## How it works

@@ -1,11 +1,11 @@
 # Minimize
 
-Replace deno `-A` with the actual used flags
+Find all the permissions used by a Deno program
 
 ## Usage
 
 ```sh
-deno run --allow-all --unstable-ffi --reload https://github.com/sigmaSd/Minimize-Deno/raw/master/main.ts deno_file.ts
+deno run --unstable-ffi jsr:@sigma/minimize my-deno-program.ts
 ```
 
 <img src="https://matrix-client.matrix.org/_matrix/media/r0/download/matrix.org/CFviILnvYbFZxYqIMnqZZcoL"/>
