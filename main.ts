@@ -1,5 +1,33 @@
-import { Pty } from "https://deno.land/x/deno_pty_ffi@0.19.6/mod.ts";
-import { stripAnsiCode } from "https://deno.land/std@0.208.0/fmt/colors.ts";
+/**
+# Minimize
+
+Replace deno `-A` with the actual used flags
+
+## Usage
+
+```sh
+deno run --unstable-ffi jsr:@sigma/min
+```
+
+## How it works
+
+- It runs the file with `deno run`
+- Says yes to every prompt
+- Prints all discovered permissions
+
+## Tips
+
+The output can be customized with `OUTPUT` env variable, values are `default`,
+`json`, `none`
+
+Original python version https://github.com/sigmaSd/Minimize
+
+
+@module
+*/
+
+import { Pty } from "@sigma/pty-ffi";
+import { stripAnsiCode } from "@std/fmt/colors";
 
 if (Deno.args.length === 0) throw new Error("no program provided");
 
@@ -11,6 +39,9 @@ const pty = new Pty({
   env: [["NO_COLOR", "true"]],
 });
 
+/**
+@ignore
+*/
 export type Permission =
   | "read"
   | "write"
