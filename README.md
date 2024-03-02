@@ -5,7 +5,7 @@ Find all the permissions used by a Deno program
 ## Usage
 
 ```sh
-deno run --unstable-ffi jsr:@sigma/minimize my-deno-program.ts
+deno run -A --unstable-ffi jsr:@sigma/minimize my-deno-program.ts
 ```
 
 <img src="https://matrix-client.matrix.org/_matrix/media/r0/download/matrix.org/CFviILnvYbFZxYqIMnqZZcoL"/>

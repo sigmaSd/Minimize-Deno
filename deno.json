@@ -1,7 +1,7 @@
 {
   "name": "@sigma/minimize",
   "exports": "./main.ts",
-  "version": "0.4.0",
+  "version": "0.4.1",
 
   "imports": {
     "@sigma/pty-ffi": "jsr:@sigma/pty-ffi@^0.20.4",
