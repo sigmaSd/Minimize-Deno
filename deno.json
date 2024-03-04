@@ -4,9 +4,9 @@
   "version": "0.4.1",
 
   "imports": {
-    "@sigma/pty-ffi": "jsr:@sigma/pty-ffi@^0.20.4",
     "@std/assert": "jsr:@std/assert@^0.218.2",
-    "@std/fmt": "jsr:@std/fmt@^0.218.2"
+    "@std/fmt": "jsr:@std/fmt@^0.218.2",
+    "@sigma/pty-ffi": "jsr:@sigma/pty-ffi@^0.21.0"
   },
 
   "tasks": {

@@ -3,7 +3,7 @@
   "packages": {
     "specifiers": {
       "jsr:@denosaurs/plug@1.0.3": "jsr:@denosaurs/plug@1.0.3",
-      "jsr:@sigma/pty-ffi@^0.20.4": "jsr:@sigma/pty-ffi@0.20.4",
+      "jsr:@sigma/pty-ffi@^0.21.0": "jsr:@sigma/pty-ffi@0.21.0",
       "jsr:@std/assert@^0.213.1": "jsr:@std/assert@0.213.1",
       "jsr:@std/assert@^0.218.2": "jsr:@std/assert@0.218.2",
       "jsr:@std/encoding@0.213.1": "jsr:@std/encoding@0.213.1",
@@ -23,8 +23,8 @@
           "jsr:@std/path@0.213.1"
         ]
       },
-      "@sigma/pty-ffi@0.20.4": {
-        "integrity": "f48d8eaeff1956aeca230a7298407067b0897260069d3efdf00079822a7654bd",
+      "@sigma/pty-ffi@0.21.0": {
+        "integrity": "74b690f6fad94e8a68bd4c37b136a179189dd8c65141cc58ad2975664b097b75",
         "dependencies": [
           "jsr:@denosaurs/plug@1.0.3"
         ]
@@ -322,7 +322,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@sigma/pty-ffi@^0.20.4",
+      "jsr:@sigma/pty-ffi@^0.21.0",
       "jsr:@std/assert@^0.218.2",
       "jsr:@std/fmt@^0.218.2"
     ]
