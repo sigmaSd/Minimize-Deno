@@ -56,9 +56,11 @@ export default function tmpDir(): string | null {
   return null;
 }
 
-function unwrap<T>(a: T | undefined | null) : T {
-  if (a=== undefined || a===null) throw new Error("unwrap on an empty value")
-  return a
+function unwrap<T>(a: T | undefined | null): T {
+  if (a === undefined || a === null) {
+    throw new Error("unwrap on an empty value");
+  }
+  return a;
 }
 
 if (Deno.args.length === 0) throw new Error("no program provided");
@@ -147,9 +149,11 @@ while (true) {
   }
 
   if (lines.includes("Granted") && lines.includes("access")) {
-    const line = unwrap(lines.split(".\r\n").find((line) =>
-      line.includes("Granted") && line.includes("access")
-    ));
+    const line = unwrap(
+      lines.split(".\r\n").find((line) =>
+        line.includes("Granted") && line.includes("access")
+      ),
+    );
     const line_split = line.trim().split(/\s+/);
     const mark = line_split.indexOf("access");
     const permission_type = line_split[mark - 1] as Permission;
