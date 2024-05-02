@@ -56,6 +56,11 @@ export default function tmpDir(): string | null {
   return null;
 }
 
+function unwrap<T>(a: T | undefined | null) : T {
+  if (a=== undefined || a===null) throw new Error("unwrap on an empty value")
+  return a
+}
+
 if (Deno.args.length === 0) throw new Error("no program provided");
 
 const output = Deno.env.get("OUTPUT");
@@ -87,37 +92,37 @@ function printPermissions() {
     permissions.read.includes("<ALL>")
       ? "--allow-read"
       : permissions.read.length !== 0
-      ? "--allow-read=" + permissions.read
+      ? `--allow-read=${permissions.read}`
       : "",
     permissions.write.includes("<ALL>")
       ? "--allow-write"
       : permissions.write.length !== 0
-      ? "--allow-write=" + permissions.write
+      ? `--allow-write=${permissions.write}`
       : "",
     permissions.net.includes("<ALL>")
       ? "--allow-net"
       : permissions.net.length !== 0
-      ? "--allow-net=" + permissions.net
+      ? `--allow-net=${permissions.net}`
       : "",
     permissions.run.includes("<ALL>")
       ? "--allow-run"
       : permissions.run.length !== 0
-      ? "--allow-run=" + permissions.run
+      ? `--allow-run=${permissions.run}`
       : "",
     permissions.ffi.includes("<ALL>")
       ? "--allow-ffi"
       : permissions.ffi.length !== 0
-      ? "--allow-ffi=" + permissions.ffi
+      ? `--allow-ffi=${permissions.ffi}`
       : "",
     permissions.sys.includes("<ALL>")
       ? "--allow-sys"
       : permissions.sys.length !== 0
-      ? "--allow-sys=" + permissions.sys
+      ? `--allow-sys=${permissions.sys}`
       : "",
     permissions.env.includes("<ALL>")
       ? "--allow-env"
       : permissions.env.length !== 0
-      ? "--allow-env=" + permissions.env
+      ? `--allow-env=${permissions.env}`
       : "",
     ...Deno.args,
   ]
@@ -142,9 +147,9 @@ while (true) {
   }
 
   if (lines.includes("Granted") && lines.includes("access")) {
-    const line = lines.split(".\r\n").find((line) =>
+    const line = unwrap(lines.split(".\r\n").find((line) =>
       line.includes("Granted") && line.includes("access")
-    )!;
+    ));
     const line_split = line.trim().split(/\s+/);
     const mark = line_split.indexOf("access");
     const permission_type = line_split[mark - 1] as Permission;
