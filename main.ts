@@ -29,16 +29,6 @@ Original python version https://github.com/sigmaSd/Minimize
 import { Pty } from "@sigma/pty-ffi";
 import { stripAnsiCode } from "@std/fmt/colors";
 
-if (Deno.args.length === 0) throw new Error("no program provided");
-
-const output = Deno.env.get("OUTPUT");
-
-const pty = new Pty({
-  cmd: "deno",
-  args: ["run", ...Deno.args],
-  env: [["NO_COLOR", "true"]],
-});
-
 /**
 @ignore
 */
@@ -50,6 +40,32 @@ export type Permission =
   | "run"
   | "ffi"
   | "sys";
+
+export default function tmpDir(): string | null {
+  switch (Deno.build.os) {
+    case "linux": {
+      const tmpDir = Deno.env.get("TMPDIR");
+      if (tmpDir) return tmpDir;
+      return "/tmp";
+    }
+    case "darwin":
+      return Deno.env.get("TMPDIR") ?? null;
+    case "windows":
+      return Deno.env.get("TMP") ?? Deno.env.get("TEMP") ?? null;
+  }
+  return null;
+}
+
+if (Deno.args.length === 0) throw new Error("no program provided");
+
+const output = Deno.env.get("OUTPUT");
+
+const pty = new Pty({
+  cmd: "deno",
+  args: ["run", ...Deno.args],
+  env: [["NO_COLOR", "true"]],
+});
+
 const permissions: Record<Permission, string[]> = {
   read: [],
   write: [],
@@ -61,10 +77,10 @@ const permissions: Record<Permission, string[]> = {
 };
 
 function printPermissions() {
-  console.log("\nPermissions:");
-  console.log(permissions);
-  console.log();
-  console.log("Command:");
+  console.warn("\nPermissions:");
+  console.warn(permissions);
+  console.warn();
+  console.warn("Command:");
   const command = [
     "deno",
     "run",
@@ -108,7 +124,7 @@ function printPermissions() {
     // remove emptyness
     .filter((e) => e)
     .join(" ");
-  console.log(command);
+  console.warn(command);
 }
 
 Deno.addSignalListener("SIGINT", () => {
@@ -118,9 +134,10 @@ Deno.addSignalListener("SIGINT", () => {
 
 while (true) {
   let { data: lines, done } = await pty.read();
+  await new Promise((r) => setTimeout(r, 100));
   if (done) break;
   lines = stripAnsiCode(lines);
-  if (!output || output === "default") {
+  if (!output || output.toLowerCase() === "default") {
     await Deno.stdout.write(new TextEncoder().encode(lines));
   }
 
@@ -132,7 +149,7 @@ while (true) {
     const mark = line_split.indexOf("access");
     const permission_type = line_split[mark - 1] as Permission;
 
-    let permission;
+    let permission: string;
     if (line_split.at(mark + 2) === undefined) {
       // granted all to permission
       permission = "<ALL>";
@@ -147,7 +164,7 @@ while (true) {
     if (permission.startsWith('"')) permission = permission.slice(1, -1);
 
     if (!output || output === "default") {
-      console.log(permission_type, permission);
+      console.warn(permission_type, permission);
     }
 
     switch (permission) {
@@ -155,7 +172,7 @@ while (true) {
         permission = Deno.cwd();
         break;
       case "<TMP>":
-        permission = pty.tmpDir();
+        permission = tmpDir() || "<TMP>";
         break;
       case "<exec_path>":
         permission = Deno.execPath();
@@ -171,7 +188,7 @@ while (true) {
 }
 
 if (output === "json") {
-  console.log(JSON.stringify(permissions));
+  console.warn(JSON.stringify(permissions));
 } else {
   printPermissions();
 }

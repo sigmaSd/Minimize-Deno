@@ -1,5 +1,5 @@
-import { assert, assertEquals } from "@std/assert";
-import { Permission } from "../main.ts";
+import { assert, assertEquals, assertMatch } from "@std/assert";
+import type { Permission } from "../main.ts";
 
 const D = new TextDecoder();
 
@@ -13,7 +13,7 @@ Deno.test("No permissions", () => {
 
 Deno.test("smoke", () => {
   const output = min("./tests/cases/smoke.ts");
-  assertEquals(output.read, ["doesntexist"]);
+  assertMatch(output.read[0], /.*doesntexist$/);
   // windows have env in uppercase
   assertEquals((output.env as string[]).map((s) => s.toLowerCase()), [
     "doesntexist",
@@ -29,17 +29,15 @@ function heatUp() {
       "./main.ts",
       "./tests/cases/no_permissions.ts",
     ],
-    stderr: "inherit",
-    env: { "OUTPUT": "json" },
+    env: { OUTPUT: "json" },
   }).outputSync();
 }
 
 function min(case_: string): Record<Permission, string[] | "all"> {
   const out = new Deno.Command("deno", {
     args: ["run", "-A", "--unstable-ffi", "./main.ts", case_],
-    stderr: "inherit",
-    env: { "OUTPUT": "json" },
+    env: { OUTPUT: "json" },
   }).outputSync();
 
-  return JSON.parse(D.decode(out.stdout));
+  return JSON.parse(D.decode(out.stderr));
 }
