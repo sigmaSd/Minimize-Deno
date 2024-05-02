@@ -1,14 +1,12 @@
 {
   "name": "@sigma/minimize",
   "exports": "./main.ts",
-  "version": "0.4.2",
-
+  "version": "0.4.3",
   "imports": {
     "@std/assert": "jsr:@std/assert@^0.218.2",
     "@std/fmt": "jsr:@std/fmt@^0.218.2",
     "@sigma/pty-ffi": "jsr:@sigma/pty-ffi@^0.26.0"
   },
-
   "tasks": {
     "test": "deno test --allow-run=deno"
   }
