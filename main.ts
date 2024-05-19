@@ -29,18 +29,6 @@ Original python version https://github.com/sigmaSd/Minimize
 import { Pty } from "@sigma/pty-ffi";
 import { stripAnsiCode } from "@std/fmt/colors";
 
-/**
-@ignore
-*/
-export type Permission =
-  | "read"
-  | "write"
-  | "net"
-  | "env"
-  | "run"
-  | "ffi"
-  | "sys";
-
 export default function tmpDir(): string | null {
   switch (Deno.build.os) {
     case "linux": {
@@ -73,7 +61,7 @@ const pty = new Pty({
   env: [["NO_COLOR", "true"]],
 });
 
-const permissions: Record<Permission, string[]> = {
+const permissions: Record<Deno.PermissionName, string[]> = {
   read: [],
   write: [],
   net: [],
@@ -81,6 +69,7 @@ const permissions: Record<Permission, string[]> = {
   run: [],
   ffi: [],
   sys: [],
+  hrtime: [],
 };
 
 function printPermissions() {
@@ -121,6 +110,11 @@ function printPermissions() {
       : permissions.sys.length !== 0
       ? `--allow-sys=${permissions.sys}`
       : "",
+    permissions.hrtime.includes("<ALL>")
+      ? "--allow-hrtime"
+      : permissions.hrtime.length !== 0
+      ? `--allow-hrtime=${permissions.hrtime}`
+      : "",
     permissions.env.includes("<ALL>")
       ? "--allow-env"
       : permissions.env.length !== 0
@@ -156,7 +150,7 @@ while (true) {
     );
     const line_split = line.trim().split(/\s+/);
     const mark = line_split.indexOf("access");
-    const permission_type = line_split[mark - 1] as Permission;
+    const permission_type = line_split[mark - 1] as Deno.PermissionName;
 
     let permission: string;
     if (line_split.at(mark + 2) === undefined) {
