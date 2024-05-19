@@ -1,5 +1,4 @@
 import { assert, assertEquals, assertMatch } from "@std/assert";
-import type { Permission } from "../main.ts";
 
 const D = new TextDecoder();
 
@@ -33,7 +32,7 @@ function heatUp() {
   }).outputSync();
 }
 
-function min(case_: string): Record<Permission, string[] | "all"> {
+function min(case_: string): Record<Deno.PermissionName, string[] | "all"> {
   const out = new Deno.Command("deno", {
     args: ["run", "-A", "--unstable-ffi", "./main.ts", case_],
     env: { OUTPUT: "json" },
