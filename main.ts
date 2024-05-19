@@ -29,7 +29,7 @@ Original python version https://github.com/sigmaSd/Minimize
 import { Pty } from "@sigma/pty-ffi";
 import { stripAnsiCode } from "@std/fmt/colors";
 
-export default function tmpDir(): string | null {
+function tmpDir(): string | null {
   switch (Deno.build.os) {
     case "linux": {
       const tmpDir = Deno.env.get("TMPDIR");
