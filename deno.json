@@ -1,5 +1,6 @@
 {
   "name": "@sigma/minimize",
+  "license": "MIT",
   "exports": "./main.ts",
   "version": "0.4.6",
   "imports": {
