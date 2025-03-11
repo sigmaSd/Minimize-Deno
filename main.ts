@@ -69,7 +69,6 @@ const permissions: Record<Deno.PermissionName, string[]> = {
   run: [],
   ffi: [],
   sys: [],
-  hrtime: [],
 };
 
 function printPermissions() {
@@ -109,11 +108,6 @@ function printPermissions() {
       ? "--allow-sys"
       : permissions.sys.length !== 0
       ? `--allow-sys=${permissions.sys}`
-      : "",
-    permissions.hrtime.includes("<ALL>")
-      ? "--allow-hrtime"
-      : permissions.hrtime.length !== 0
-      ? `--allow-hrtime=${permissions.hrtime}`
       : "",
     permissions.env.includes("<ALL>")
       ? "--allow-env"
