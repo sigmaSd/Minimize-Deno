@@ -128,7 +128,7 @@ Deno.addSignalListener("SIGINT", () => {
 });
 
 while (true) {
-  let { data: lines, done } = await pty.read();
+  let { data: lines, done } = pty.read();
   await new Promise((r) => setTimeout(r, 100));
   if (done) break;
   lines = stripAnsiCode(lines);
@@ -180,7 +180,7 @@ while (true) {
   }
 
   if (lines.includes("Allow?")) {
-    await pty.write("y\n\r");
+    pty.write("y\n\r");
   }
 }
 
