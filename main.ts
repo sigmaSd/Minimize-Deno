@@ -126,7 +126,7 @@ Deno.addSignalListener("SIGINT", () => {
   Deno.exit();
 });
 
-pty.setPollingInterval(500);
+pty.setPollingInterval(200);
 for await (let lines of pty.readable) {
   lines = stripAnsiCode(lines);
   if (!output || output.toLowerCase() === "default") {
