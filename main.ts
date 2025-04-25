@@ -55,10 +55,9 @@ if (Deno.args.length === 0) throw new Error("no program provided");
 
 const output = Deno.env.get("OUTPUT");
 
-const pty = new Pty({
-  cmd: "deno",
+const pty = new Pty(Deno.execPath(), {
   args: ["run", ...Deno.args],
-  env: [["NO_COLOR", "true"]],
+  env: { NO_COLOR: "1" },
 });
 
 const permissions: Record<Deno.PermissionName, string[]> = {
@@ -127,10 +126,8 @@ Deno.addSignalListener("SIGINT", () => {
   Deno.exit();
 });
 
-while (true) {
-  let { data: lines, done } = pty.read();
-  await new Promise((r) => setTimeout(r, 100));
-  if (done) break;
+pty.setPollingInterval(100);
+for await (let lines of pty.readable) {
   lines = stripAnsiCode(lines);
   if (!output || output.toLowerCase() === "default") {
     await Deno.stdout.write(new TextEncoder().encode(lines));
